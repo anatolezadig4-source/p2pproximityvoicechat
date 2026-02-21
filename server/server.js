@@ -2,23 +2,8 @@ const WebSocket = require('ws');
 const http = require('http');
 const path = require('path'); // tu peux garder path si tu veux
 
-
-// Load SSL certificates with error handling
-let serverOptions;
-try {
-  serverOptions = {
-    key: fs.readFileSync(path.join(__dirname, 'server.key')),
-    cert: fs.readFileSync(path.join(__dirname, 'server.cert'))
-  };
-} catch (error) {
-  console.error('Error loading SSL certificates:', error.message);
-  console.error('Please generate certificates with:');
-  console.error('  openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 365');
-  process.exit(1);
-}
-
 // Create HTTPS server to serve static files
-const server = https.createServer(serverOptions, (req, res) => {
+const server = http.createServer((req, res) => {
   // Serve files from parent directory
   const baseDir = path.join(__dirname, '..');
   const requestedPath = req.url === '/' ? 'index.html' : req.url;
